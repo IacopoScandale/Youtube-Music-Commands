@@ -21,7 +21,7 @@ from pytubefix import Playlist
 # from pytube import Playlist
 import os, sys
 from mutagen.mp3 import EasyMP3
-from dataaa.constants import help_and_error
+from data.utils import help_and_error
 
 help_and_error(help_message, sys.argv, 1)
 
