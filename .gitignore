@@ -1,1 +1,4 @@
-VirtualEnvironment
+venv
+__pycache__
+prova.py
+tmp.bat

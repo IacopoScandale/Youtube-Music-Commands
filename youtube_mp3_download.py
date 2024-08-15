@@ -1,18 +1,20 @@
-help_message = """
-Questo comando prende in input il link di un video su youtube e
-ne scarica l'audio in mp3 nella cartella corrente. 
+from dataaa.constants import help_and_error
+from pytubefix import YouTube
+# from pytube import YouTube
+import os
+import sys
 
-Usage: mp3_download <url_video_youtube>
+
+help_message = """
+Takes in input a youtube video url and downloads its mp3 audio in the
+current folder.
+
+Usage: ytmp3 <youtube_video_url>
 """
 
-from pytube import YouTube
-from sys import argv
-from os import system, remove
-from Data.constants import help_and_error
+help_and_error(help_message, sys.argv, 1)
 
-help_and_error(help_message, argv, 1)
-
-yt_video_link = argv[1]
+yt_video_link = sys.argv[1]
 video = YouTube(yt_video_link)
 
 print(f"  Downloading '{video.title}'")
@@ -34,7 +36,10 @@ for ch in video.title:
 best_audio.download(output_path='.', filename=f"tmp_{video_name}.mp3")
 
 # Cambia la codifica in mp3
-system(f'ffmpeg -i "tmp_{video_name}.mp3" -c:a mp3 -hide_banner "{video_name}.mp3"')
+os.system(
+  f'ffmpeg -i "tmp_{video_name}.mp3" -c:a mp3 -hide_banner "{video_name}.mp3"'
+)
 
-# Cancella il file temporaneo sperando che lo faccia dopo che il comando precedente sia terminato
-remove(f"tmp_{video_name}.mp3")
+# Cancella il file temporaneo sperando che lo faccia dopo che il comando
+# precedente sia terminato
+os.remove(f"tmp_{video_name}.mp3")
