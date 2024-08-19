@@ -1,5 +1,4 @@
 from yt_music_commands.data.strings import *
-from setuptools.command.install import install
 from setuptools import setup, find_packages
 
 

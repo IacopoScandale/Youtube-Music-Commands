@@ -11,7 +11,7 @@ def print_path(path: str) -> None:
 
 def remove_folder(folder: str) -> None:
   """
-  Recursively deletes a folder and all folders inside
+  Recursively deletes a folder and all folders and files inside
   """
   if os.name == "nt":
     command: str = 'rmdir /s /q "{folder}"'
