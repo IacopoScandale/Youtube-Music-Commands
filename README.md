@@ -1,5 +1,5 @@
 # Youtube Music Commands
-Simple terminal line commands
+Simple terminal line commands for managing music albums and for downloading music from youtube in a simple way.
 
 
 
@@ -26,3 +26,5 @@ work in progress
 |-|-|
 |`ytmp3`|downloads the mp3 audio from a youtube video link|
 |`ytmp3_playlist`|downloads all the mp3 audio from a youtube playlist. Then (optional) it asks to insert some fields like album, artist, cover etc.|
+
+Type `command_name -h` or `command_name --help` for more info
