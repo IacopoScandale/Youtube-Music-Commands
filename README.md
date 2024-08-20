@@ -2,7 +2,8 @@
 Simple terminal line commands for managing music albums and for downloading music from youtube in a simple way.
 
 
-
+# Requirements
+Requires `ffmpeg` to be installed and to be ready to use in every terminal by typing "ffmpeg".
 
 # Download
 Recommended install is by executing install files respectively .bat for windows and ??? for linux. 

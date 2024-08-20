@@ -1,28 +1,8 @@
-help_message = """
-Questo comando prende in input il link di una playlist di video
-su youtube e ne scarica gli l'audio in mp3 nella cartella corrente.
-
-Inoltre chiederà anche di inserire la data dell'album, e di scegliere
-se numerarli nell'ordine della playlist con una scelta [s,n]
-
-Usage: ytmp3pl <youtube_playlist_url>
-
-OSS: A causa della codifica "strana" di download ho dovuto riprocessare
-     ogni singolo file scaricato con ffmpeg. Infatti scarico l'audio con
-     un nome temporaneo, poi lo codifico con ffmpeg e cancello il file 
-     originale.
-
-NOTA: da terminare migliorando la visualizzazione che a causa di ffmpeg
-      è un casino. Sarebbe carino fare una sorta di interfaccia grafica
-      carina. 
-"""
-
+from .data.utils import download_as_mp3, get_video_output_name
 from pytubefix import Playlist
 # from pytube import Playlist
-from mutagen import File
 from mutagen.id3 import ID3, APIC, TIT2, TPE1, TALB, TDRC, TRCK  
 from argparse import ArgumentParser, Namespace
-import subprocess
 import os
 
 
@@ -33,8 +13,10 @@ def get_arguments() -> Namespace:
       "mp3 audio. Optional: it also asks to insert album name, artist, "
       "date, and asks if you want to enumerate them in the shown "
       "order. NB: due to a strange error caused by mutagen I prefer "
-      "to reprocess mp3 files with ffmpeg. This only for adding "
-      "album metadata as cover, artist etc..."
+      "to reprocess mp3 files with ffmpeg. This not only for adding "
+      "album metadata as cover, artist etc..., but also to permit to "
+      "use this mp3 file in other programs e.g. audacity, that "
+      "otherwise will not recognize it"
     )
   )
   parser.add_argument("youtube_playlist_link")
@@ -117,33 +99,11 @@ def main():
   # start to download
   for i, video in enumerate(playlist.videos, 1):
     print(f"{i:>4}) Downloading '{video.title}'")
-    to_download = video.streams.filter(only_audio=True, file_extension='mp4')    
-
-    # Select best quality audio stream
-    best_audio = to_download.order_by('abr').desc().first()
-    # TODO add possibility to select audio quality
-
-    # manually set video title for reuse file with EasyMP3
-    video_title: str = video.title.replace("\\"," ").replace("/"," ")
-
-    # Download selected audio stream
-    best_audio.download(
-      output_path='.', 
-      filename=f"tmp_{video_title}",
-      mp3=True
-    )
     
-    tmp_filename: str = f"tmp_{video_title}.mp3"
-    filename: str = f"{video_title}.mp3"
+    download_as_mp3(video)
 
-    subprocess.run(
-      ["ffmpeg", "-i", tmp_filename, filename],
-      stdout=subprocess.DEVNULL,  # suppress standard output
-      stderr=subprocess.DEVNULL,  # out error and progress information
-      stdin=subprocess.DEVNULL,  # suppress any standard input requests
-    )
-
-    os.remove(tmp_filename)
+    # adding metadata:
+    filename: str = get_video_output_name(video)
 
     audio = ID3(filename)
     audio["TIT2"] = TIT2(encoding=3, text=video.title)
