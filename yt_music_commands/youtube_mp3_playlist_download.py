@@ -103,7 +103,7 @@ def main():
     download_as_mp3(video)
 
     # adding metadata:
-    filename: str = get_video_output_name(video)
+    filename: str = get_video_output_name(video, mp3_ext=True)
 
     audio = ID3(filename)
     audio["TIT2"] = TIT2(encoding=3, text=video.title)

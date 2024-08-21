@@ -3,12 +3,15 @@ import subprocess
 import os
 
 
-def get_video_output_name(video: YouTube) -> str:
+def get_video_output_name(video: YouTube, mp3_ext: bool = False) -> str:
   """
   Removes title problematic characters and returns output filename
   WITOUT .mp3 extension
   """
-  return video.title.replace("\\"," ").replace("/"," ")
+  video_title: str = video.title.replace("\\"," ").replace("/"," ")
+  if mp3_ext is True:
+    return f"{video_title}.mp3"
+  return video_title
 
 
 def download_as_mp3(video: YouTube) -> None:
