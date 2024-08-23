@@ -15,6 +15,22 @@ def get_arguments() -> Namespace:
     )
   )
   parser.add_argument("youtube_video_link")
+  parser.add_argument(
+    "-ss", 
+    "--start",
+    metavar="time",
+    type=str, 
+    help="where the video starts e.g. '07:12'",
+    default=None,
+  )
+  parser.add_argument(
+    "-to", 
+    "--end",
+    metavar="time",
+    type=str, 
+    help="where the video ends e.g. '12:31'",
+    default=None,
+  )
 
   args: Namespace = parser.parse_args()
   return args
@@ -26,4 +42,4 @@ def main() -> None:
 
   print(f"  Downloading '{video.title}'")
 
-  download_as_mp3(video)
+  download_as_mp3(video, start=args.start, end=args.end)

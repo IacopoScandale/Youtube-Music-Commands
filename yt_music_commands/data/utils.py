@@ -14,7 +14,11 @@ def get_video_output_name(video: YouTube, mp3_ext: bool = False) -> str:
   return video_title
 
 
-def download_as_mp3(video: YouTube) -> None:
+def download_as_mp3(
+  video: YouTube, 
+  start: str | None = None, 
+  end: str | None = None,
+) -> None:
   """
   Download video as mp3 and reformat using ffmpeg
   """
@@ -38,8 +42,18 @@ def download_as_mp3(video: YouTube) -> None:
   tmp_filename: str = f"tmp_{video_title}.mp3"
   filename: str = f"{video_title}.mp3"
 
+  # extra ffmpeg options
+  inner_options: list[str] = []
+  if start is not None:
+    inner_options.append("-ss")
+    inner_options.append(start)
+  if end is not None:
+    inner_options.append("-to")
+    inner_options.append(end)
+
+
   subprocess.run(
-    ["ffmpeg", "-i", tmp_filename, filename],
+    ["ffmpeg", "-i", tmp_filename, *inner_options, filename],
     stdout=subprocess.DEVNULL,  # suppress standard output
     stderr=subprocess.DEVNULL,  # out error and progress information
     stdin=subprocess.DEVNULL,  # suppress any standard input requests
