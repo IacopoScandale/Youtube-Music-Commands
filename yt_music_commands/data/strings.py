@@ -17,12 +17,13 @@ COMMAND_LINK_FOLDER: str = "Commands"
 # command names
 YT_MP3: str = "ytmp3"
 YT_MP3_PLAYLIST: str = "ytmp3_playlist"
-
+YT_FIND_QUERY_PLAYLIST: str = "yt_playlist_find"
 
 
 COMMANDS: dict[str,str] = {
   YT_MP3: "youtube_mp3_download",
   YT_MP3_PLAYLIST: "youtube_mp3_playlist_download",
+  YT_FIND_QUERY_PLAYLIST: "youtube_find_video_in_playlist",
 }
 """
 Maps each command name to the filename to call (without .py ext)
