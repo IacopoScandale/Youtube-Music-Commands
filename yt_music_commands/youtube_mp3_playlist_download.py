@@ -24,7 +24,7 @@ def get_arguments() -> Namespace:
   return args
 
 
-def get_optional_choices() -> tuple[str]:
+def get_optional_choices() -> tuple[str, str, str, str, str]:
   # optional: add album name, artist and year to every file
   album: str = input("\n 1/5: Insert album name or leave it blank:\n      ")
   artist: str = input("\n 2/5: Insert artist or leave it blank:\n      ")
@@ -61,7 +61,7 @@ def find_cover() -> str:
   used to put in an album folder the cover file, then it will be used
   as cover.
   """
-  cover_extensions: list[str] = (".jpg",".jpeg",".png")
+  cover_extensions: tuple[str, str, str] = (".jpg",".jpeg",".png")
   
   for filename in os.listdir():
     if filename.endswith(cover_extensions):
@@ -79,7 +79,7 @@ def get_mime_type(cover: str) -> str:
   return f"image/{extension[1:]}"
 
 
-def main():
+def main() -> None:
   args: Namespace = get_arguments()
 
   playlist: Playlist = Playlist(args.youtube_playlist_link)

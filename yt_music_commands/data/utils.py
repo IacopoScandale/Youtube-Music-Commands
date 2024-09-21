@@ -22,8 +22,12 @@ def download_as_mp3(
   """
   Download video as mp3 and reformat using ffmpeg
   """
-  to_download = video.streams.filter(only_audio=True,file_extension='mp4')
-  # print(to_download)
+  try:
+    to_download = video.streams.filter(file_extension='mp4')
+    # print(to_download)
+  except Exception as e:
+    print(e)
+    return None
 
   # Select best quality audio stream
   best_audio = to_download.order_by('abr').desc().first()
